@@ -1,0 +1,8 @@
+.file-pad {
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 0;
+    max-height: 1000px;
+    padding: 10px;
+}

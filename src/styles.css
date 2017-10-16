@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~clarity-icons/clarity-icons.min.css";
+@import "~clarity-ui/clarity-ui.min.css";
+pre span {
+    white-space: normal;
+}
+
+.string {
+    color: green;
+}
+
+.number {
+    color: darkorange;
+}
+
+.boolean {
+    color: blue;
+}
+
+.null {
+    color: magenta;
+}
+
+.key {
+    color: red;
+}

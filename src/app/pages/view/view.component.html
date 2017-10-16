@@ -1,0 +1,160 @@
+<div class="card">
+    <div class="card-header">接口信息</div>
+    <div class="card-block">
+        <section class="form-block">
+            <div class="form-group">
+                <label>接口名称:</label>
+                <input type="text" [(ngModel)]="form.title" placeholder="请输入接口名称">
+            </div>
+            <br>
+            <div class="form-group">
+                <label>接口地址:</label>
+                <input type="text" [(ngModel)]="form.url" placeholder="请输入接口地址/api/test/info">
+            </div>
+            <br>
+            <div class="form-group">
+                <label>请求方式:</label>
+                <select type="text" [(ngModel)]="form.method">
+                    <option value="get" class="text-info">get</option>
+                    <option value="post" class="text-success">post</option>
+                    <option value="put" class="text-primary">put</option>
+                    <option value="delete" class="text-danger">delete</option>
+                </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <label>接口描述:</label>
+                <textarea placeholder="请输入接口描述信息" [(ngModel)]="form.description"></textarea>
+            </div>
+        </section>
+    </div>
+</div>
+<br>
+<clr-tabs>
+    <clr-tab>
+        <button clrTabLink id="link1">参数编辑</button>
+        <clr-tab-content id="content1" *clrIfActive="true">
+            <div class="card-block">
+                <table class="table table-noborder">
+                    <thead>
+                        <tr>
+                            <th class="w-25">参数名称</th>
+                            <th class="w-25">参数描述</th>
+                            <th class="w-25">参数类型</th>
+                            <th class="w-25">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let input of form.inputs;index as i">
+                            <td>
+                                <input [(ngModel)]="input.name" type="text" class="border-0 w-100" style="background-color:transparent;" placeholder="请输入参数名称" />
+                            </td>
+                            <td>
+                                <input [(ngModel)]="input.description" type="text" class="border-0 w-100" style="background-color:transparent;" placeholder="请输入参数描述" />
+                            </td>
+                            <td>
+                                <select [(ngModel)]="input.type" color="accent" style="padding-top: 0px;">
+                                    <option value="text">文本</option>
+                                    <option value="file">文件（单选）</option>
+                                    <option value="files">文件（多选）</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button (click)="deleteInput(i)" class="btn btn-danger btn-sm" style="line-height: 1.8rem;">删除参数</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <button (click)="addInput()" class="btn btn-success btn-sm">添加参数</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+        <button clrTabLink>预览/测试</button>
+        <clr-tab-content *clrIfActive>
+            <div class="card-body">
+                <form #testForm="ngForm" (ngSubmit)="tryApi(testForm)">
+                    <ng-template ngFor let-item [ngForOf]="form.inputs" let-i="index">
+                        <div class="form-group row" *ngIf="item.type=='text'||!item.type">
+                            <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                                <label>{{item.name||'未设置'}}</label>
+                            </div>
+                            <div class="col-lg-4 col-md-5 col-sm-12 col-xs-12">
+                                <input type="text" class="form-control form-control-sm" name="{{item.name||'test'}}" ngModel placeholder="此处输入参数的值">
+                            </div>
+                            <div class="col-lg-3 col-md-5 col-sm-12 col-xs-12">
+                                <span>{{item.description||'...'}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row" *ngIf="item.type=='file'">
+                            <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                                <label>{{item.name||'未设置'}}</label>
+                            </div>
+                            <div class="col-lg-4 col-md-5 col-sm-12 col-xs-12">
+                                <input type="file" (change)="$event.target.parentNode.children[1].value=$event.target.value" [hidden]="true" name="{{item.name||'test'}}" ngModel>
+                                <input (click)="$event.target.parentNode.children[0].click()" type="text" class="form-control form-control-sm" placeholder="点击此处选择文件">
+                            </div>
+                            <div class="col-lg-3 col-md-5 col-sm-12 col-xs-12">
+                                <span>{{item.description||'...'}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group row" *ngIf="item.type=='files'">
+                            <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                                <label>{{item.name||'未设置'}}</label>
+                            </div>
+                            <div class="col-lg-4 col-md-5 col-sm-12 col-xs-12">
+                                <input type="file" multiple="true" (change)="$event.target.parentNode.children[1].value='共选中:'+$event.target.files.length+'个文件'" [hidden]="true" name="{{item.name||'test'}}" ngModel>
+                                <input (click)="$event.target.parentNode.children[0].click()" type="text" class="form-control form-control-sm" placeholder="点击此处选择文件">
+                            </div>
+                            <div class="col-lg-3 col-md-5 col-sm-12 col-xs-12">
+                                <span>{{item.description||'...'}}</span>
+                            </div>
+                        </div>
+                        <br>
+                    </ng-template>
+                    <div class="button-row text-right">
+                        <button type="submit" class="btn btn-primary btn-sm">尝试测试接口</button>
+                    </div>
+                </form>
+            </div>
+        </clr-tab-content>
+    </clr-tab>
+</clr-tabs>
+<clr-modal #successModal>
+    <h3 class="modal-title">接口调用成功</h3>
+    <div class="modal-body">
+        <pre [innerHtml]="success | prettyjson:3"></pre>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="successModal.close()">关闭窗口</button>
+    </div>
+</clr-modal>
+<clr-modal #errorModal [clrModalSize]="'lx'">
+    <h3 class="modal-title">接口调用失败(STATUS:{{error.status}})</h3>
+    <div class="modal-body">
+        <clr-tree-node>
+            错误详情
+            <ng-template [clrIfExpanded]="false">
+                <div>请求链接: <span class="text-info">{{error.url}}</span></div><br>
+                <div>响应消息: <span class="text-info">{{error.message}}</span></div><br>
+                <div>状态文本: <span class="text-info">{{error.statusText}}</span></div><br>
+                <div>请求状态:<span class="text-info">{{error.status}}</span></div>
+            </ng-template>
+        </clr-tree-node>
+        <pre *ngIf="error.status===401" [innerHtml]="getJSON(error.error) | prettyjson:3"></pre>
+        <div *ngIf="error.status!=401" class="embed-responsive embed-responsive-16by9">
+            <iframe id="error-html" class="embed-responsive-item"></iframe>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="errorModal.close()">关闭窗口</button>
+    </div>
+</clr-modal>
+<pre class="file-pad">{{form|json}}</pre>

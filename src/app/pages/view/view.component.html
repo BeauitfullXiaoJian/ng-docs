@@ -127,7 +127,7 @@
         </clr-tab-content>
     </clr-tab>
 </clr-tabs>
-<clr-modal #successModal>
+<clr-modal #successModal [clrModalSize]="'lg'">
     <h3 class="modal-title">接口调用成功</h3>
     <div class="modal-body">
         <pre [innerHtml]="success | prettyjson:3"></pre>
@@ -136,7 +136,7 @@
         <button type="button" class="btn btn-primary" (click)="successModal.close()">关闭窗口</button>
     </div>
 </clr-modal>
-<clr-modal #errorModal [clrModalSize]="'lx'">
+<clr-modal #errorModal [clrModalSize]="'lg'">
     <h3 class="modal-title">接口调用失败(STATUS:{{error.status}})</h3>
     <div class="modal-body">
         <clr-tree-node>

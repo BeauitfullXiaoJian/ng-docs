@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { DocsService } from './services/docs.service';
 import { TaskQuery, Task } from './classes/task.class';
+import { DocsConfig } from './interfaces/docs.interfaces';
+
 
 @Component({
   selector: 'app-root',
@@ -9,7 +11,9 @@ import { TaskQuery, Task } from './classes/task.class';
 })
 export class AppComponent {
 
-  constructor(private docsService: DocsService) { }
+  config = {}
+
+  constructor(private docsService: DocsService) {  }
 
   ngOnInit() {
 
@@ -28,7 +32,7 @@ export class AppComponent {
     taskQuery.ready(_ => {
       this.docsService.loaded = true
       this.docsService.readyHandle.ready()
-      console.log(this.docsService.models)
+      this.config = this.docsService.config
     })
 
   }

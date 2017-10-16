@@ -1,48 +1,63 @@
 <div class="main-container">
-  <header class="header-6">
-    <div class="branding">
-      <a href="..." class="nav-link">
-        <img style="height:100%;" src="/assets/logo/logo.svg">
-        <span class="title">{{docsService.config.title||'API-DOCS'}}</span>
-      </a>
-    </div>
-    <div class="header-nav">
-      <a href="javascript://" class="active nav-link nav-text">视图</a>
-      <a href="javascript://" class="nav-link nav-text">文档</a>
-      <a href="javascript://" class="nav-link nav-text">实验室</a>
-    </div>
-    <div class="header-actions">
-      <clr-dropdown>
-        <button class="nav-icon" clrDropdownTrigger>
+    <header class="header-6">
+        <div class="branding">
+            <a href="..." class="nav-link">
+                <img style="height:100%;" src="/assets/logo/logo.svg">
+                <span class="title">{{docsService.config.title||'API-DOCS'}}</span>
+            </a>
+        </div>
+        <div class="header-nav">
+            <a href="javascript://" class="active nav-link nav-text">视图</a>
+            <a href="javascript://" class="nav-link nav-text">文档</a>
+            <a href="javascript://" class="nav-link nav-text">实验室</a>
+        </div>
+        <div class="header-actions">
+            <clr-dropdown>
+                <button class="nav-icon" clrDropdownTrigger>
           <clr-icon shape="cog"></clr-icon>
           <clr-icon shape="caret down"></clr-icon>
         </button>
-        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
-          <a href="..." clrDropdownItem>头部参数</a>
-          <a href="..." clrDropdownItem>服务器地址</a>
-          <a href="..." clrDropdownItem>关于</a>
-        </clr-dropdown-menu>
-      </clr-dropdown>
-    </div>
-  </header>
-  <div class="content-container">
-    <div class="content-area">
-      <router-outlet></router-outlet>
-    </div>
-    <nav class="sidenav">
-      <section class="sidenav-content">
-        <a class="nav-link">API-DOCS</a>
-        <section class="nav-group collapsible" *ngFor="let model of docsService.models;index as i">
-          <input id="{{model.title}}" type="checkbox">
-          <label for="{{model.title}}">{{model.title}}</label>
-          <ul class="nav-list">
-            <li *ngFor="let form of model.forms;index as j">
-              <a routerLink="/view/{{i}}/{{j}}">{{form.title}}</a>
-            </li>
-          </ul>
-        </section>
+                <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+                    <a (click)="header_modal.open()" clrDropdownItem>头部参数</a>
+                    <a href="..." clrDropdownItem>服务器地址</a>
+                    <a href="..." clrDropdownItem>关于</a>
+                </clr-dropdown-menu>
+            </clr-dropdown>
+        </div>
+    </header>
+    <div class="content-container">
+        <div class="content-area">
+            <router-outlet></router-outlet>
+        </div>
+        <nav class="sidenav">
+            <section class="sidenav-content">
+                <a class="nav-link">API-DOCS</a>
+                <section class="nav-group collapsible" *ngFor="let model of docsService.models;index as i">
+                    <input id="{{model.title}}" type="checkbox">
+                    <label for="{{model.title}}">{{model.title}}</label>
+                    <ul class="nav-list">
+                        <li *ngFor="let form of model.forms;index as j">
+                            <a routerLink="/view/{{i}}/{{j}}">{{form.title}}</a>
+                        </li>
+                    </ul>
+                </section>
 
-      </section>
-    </nav>
-  </div>
+            </section>
+        </nav>
+    </div>
 </div>
+<clr-modal #header_modal [clrModalSize]="'lx'">
+    <h3 class="modal-title">Header配置</h3>
+    <div class="modal-body">
+        <section class="form-block">
+            <div class="form-group" *ngFor="let header of config.headers" style="margin-bottom:20px;">
+                <label>{{header}}</label>
+                <input type="text" name="{{header}}">
+            </div>
+        </section>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="header_modal.close()">取消/关闭</button>
+        <button type="button" class="btn btn-success" (click)="header_modal.close()">确认设置</button>
+    </div>
+</clr-modal>

@@ -16,6 +16,7 @@ import { AppComponent } from "./app.component";
 
 //page component list
 import { ViewComponent } from './pages/view/view.component';
+import { DocsComponent } from './pages/docs/docs.component';
 
 
 @NgModule({
@@ -27,12 +28,14 @@ import { ViewComponent } from './pages/view/view.component';
     NoopAnimationsModule,
     ClarityModule.forRoot(),
     RouterModule.forRoot([
-      { path: 'view/:model/:form', component: ViewComponent }
+      { path: 'view/:model/:form', component: ViewComponent },
+      { path: 'docs', component: DocsComponent }
     ])
   ],
   declarations: [
     AppComponent,
     ViewComponent,
+    DocsComponent,
   ],
   bootstrap: [AppComponent],
   providers: [

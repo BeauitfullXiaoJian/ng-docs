@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DocsService } from './../../services/docs.service';
 import { DocsForm } from './../../interfaces/docs.interfaces';
-import { HttpClient, HttpParams, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpErrorResponse, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -52,23 +52,23 @@ export class ViewComponent {
 
         switch (this.form.method) {
             case 'get': {
-                this.httpClient.get(this.docsService.config.server + this.form.url, { params: this.getHttpParams(form.value) }).subscribe(res => this.showSuccessPad(res), error => this.showErrorPad(error))
+                this.httpClient.get(this.docsService.config.server + this.form.url, { params: this.getHttpParams(form.value), headers: this.getHttpHeaders() }).subscribe(res => this.showSuccessPad(res), error => this.showErrorPad(error))
                 break
             }
             case 'post': {
-                this.httpClient.post(this.docsService.config.server + this.form.url, form.value).subscribe(res => this.showSuccessPad(res), error => this.showErrorPad(error))
+                this.httpClient.post(this.docsService.config.server + this.form.url, form.value, { headers: this.getHttpHeaders() }).subscribe(res => this.showSuccessPad(res), error => this.showErrorPad(error))
                 break
             }
             case 'put': {
-                this.httpClient.put(this.docsService.config.server + this.form.url, form.value).subscribe(res => this.showSuccessPad(res), error => this.showErrorPad(error))
+                this.httpClient.put(this.docsService.config.server + this.form.url, form.value, { headers: this.getHttpHeaders() }).subscribe(res => this.showSuccessPad(res), error => this.showErrorPad(error))
                 break
             }
             case 'delete': {
-                this.httpClient.delete(this.docsService.config.server + this.form.url, { params: this.getHttpParams(form.value) }).subscribe(res => this.showSuccessPad(res), error => this.showErrorPad(error))
+                this.httpClient.delete(this.docsService.config.server + this.form.url, { params: this.getHttpParams(form.value), headers: this.getHttpHeaders() }).subscribe(res => this.showSuccessPad(res), error => this.showErrorPad(error))
                 break
             }
             default: {
-                this.httpClient.get(this.docsService.config.server + this.form.url, { params: this.getHttpParams(form.value) }).subscribe(res => this.showSuccessPad(res), error => this.showErrorPad(error))
+                this.httpClient.get(this.docsService.config.server + this.form.url, { params: this.getHttpParams(form.value), headers: this.getHttpHeaders() }).subscribe(res => this.showSuccessPad(res), error => this.showErrorPad(error))
             }
         }
     }
@@ -81,10 +81,22 @@ export class ViewComponent {
         return httpParams
     }
 
+    getHttpHeaders(): HttpHeaders {
+        let httpHeaders = new HttpHeaders()
+        if (this.docsService.config && this.docsService.config.headers) {
+            this.docsService.config.headers.forEach(header => {
+                httpHeaders = httpHeaders.set(header, localStorage.getItem(header))
+            })
+        }
+        return httpHeaders
+    }
+
     showErrorPad(error: HttpErrorResponse) {
         this.errorModal.open()
         this.error = error
         setTimeout(_ => {
+            console.log('接口调用失败')
+            console.log(this.error)
             let iframe = <HTMLIFrameElement>document.getElementById('error-html')
             iframe.contentWindow.document.body.innerHTML = error.error
         }, 100)
@@ -95,13 +107,17 @@ export class ViewComponent {
         this.success = datas
     }
 
+    consoleData(){
+        console.log(this.success)
+    }
+
     getJSON(jsonStr: string) {
         let json = {}
         try {
             json = JSON.parse(jsonStr)
         }
-        catch{
-
+        catch (e) {
+            json = { error: "不是合法的JSON串", string: jsonStr }
         }
         return json
     }

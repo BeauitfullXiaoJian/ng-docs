@@ -7,7 +7,22 @@ import { Task, TaskHandle } from './../classes/task.class';
 @Injectable()
 export class DocsService {
 
-    constructor(private httpClient: HttpClient) { }
+    ready: Task
+
+    readyHandle: TaskHandle
+
+    loaded = false
+
+    config: any = {}
+
+    models: DocsModel[] = new Array<DocsModel>()
+
+    constructor(private httpClient: HttpClient) {
+        this.ready = new Task(handle => {
+            this.readyHandle = handle
+            if (this.loaded) handle.ready()
+        })
+    }
 
     loadConfig(handle: TaskHandle) {
 
@@ -46,17 +61,4 @@ export class DocsService {
         }
     }
 
-
-    ready: Task = new Task(handle => {
-        this.readyHandle = handle
-        if (this.loaded) handle.ready()
-    })
-
-    readyHandle: TaskHandle
-
-    loaded = false
-
-    config: any = {}
-
-    models: DocsModel[] = new Array<DocsModel>()
 }

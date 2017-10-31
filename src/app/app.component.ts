@@ -11,9 +11,11 @@ import { DocsConfig } from './interfaces/docs.interfaces';
 })
 export class AppComponent {
 
-  config = {}
+  config: any = {}
 
-  constructor(private docsService: DocsService) {  }
+  headers: any = {}
+
+  constructor(public docsService: DocsService) { }
 
   ngOnInit() {
 
@@ -31,10 +33,21 @@ export class AppComponent {
 
     taskQuery.ready(_ => {
       this.docsService.loaded = true
-      this.docsService.readyHandle.ready()
+      if (this.docsService.readyHandle) {
+        this.docsService.readyHandle.ready()
+      }
       this.config = this.docsService.config
     })
 
+  }
+
+  //保存headers数据
+  saveHeaders(form: any) {
+    if (this.config.headers) {
+      for(const key in this.headers){
+        localStorage.setItem(key,this.headers[key])
+      }
+    }
   }
 
 }

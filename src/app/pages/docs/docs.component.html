@@ -1,0 +1,14 @@
+<clr-tabs>
+  <clr-tab>
+    <button clrTabLink >config.json</button>
+    <clr-tab-content  *clrIfActive>
+      <pre style="max-height:100%;" [innerHtml]="config|prettyjson"></pre>
+    </clr-tab-content>
+  </clr-tab>
+  <clr-tab *ngFor="let model of models;index as i">
+    <button clrTabLink>{{config.docs[i]}}</button>
+    <clr-tab-content>
+        <pre style="max-height:none !important;" [innerHtml]="model|prettyjson"></pre>        
+    </clr-tab-content>
+  </clr-tab>
+</clr-tabs>

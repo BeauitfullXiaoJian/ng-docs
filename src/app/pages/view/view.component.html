@@ -130,9 +130,10 @@
 <clr-modal #successModal [clrModalSize]="'lg'">
     <h3 class="modal-title">接口调用成功</h3>
     <div class="modal-body">
-        <pre [innerHtml]="success | prettyjson:3"></pre>
+        <pre style="max-height:100%" [innerHtml]="success | prettyjson:3"></pre>
     </div>
     <div class="modal-footer">
+        <button type="button" class="btn btn-warning" (click)="consoleData()">控制台打印</button>            
         <button type="button" class="btn btn-primary" (click)="successModal.close()">关闭窗口</button>
     </div>
 </clr-modal>

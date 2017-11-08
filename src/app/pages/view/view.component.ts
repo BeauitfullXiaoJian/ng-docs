@@ -49,7 +49,7 @@ export class ViewComponent {
     }
 
     tryApi(form: NgForm) {
-
+        console.log(this.docsService.config.server + this.form.url)
         switch (this.form.method) {
             case 'get': {
                 this.httpClient.get(this.docsService.config.server + this.form.url, { params: this.getHttpParams(form.value), headers: this.getHttpHeaders() }).subscribe(res => this.showSuccessPad(res), error => this.showErrorPad(error))
@@ -85,7 +85,7 @@ export class ViewComponent {
         let httpHeaders = new HttpHeaders()
         if (this.docsService.config && this.docsService.config.headers) {
             this.docsService.config.headers.forEach(header => {
-                httpHeaders = httpHeaders.set(header, localStorage.getItem(header))
+                httpHeaders = httpHeaders.set(header, localStorage.getItem(header) || '')
             })
         }
         return httpHeaders
@@ -107,7 +107,7 @@ export class ViewComponent {
         this.success = datas
     }
 
-    consoleData(){
+    consoleData() {
         console.log(this.success)
     }
 

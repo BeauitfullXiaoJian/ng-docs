@@ -26,7 +26,7 @@ export class DocsService {
 
     loadConfig(handle: TaskHandle) {
 
-        this.httpClient.get(API_PATH.config).subscribe(res => {
+        this.httpClient.get(API_PATH.config+ '?version=' + new Date()).subscribe(res => {
             this.config = <DocsConfig>res
             handle.ready(res)
             console.log('配置文件载入成功')
@@ -43,7 +43,7 @@ export class DocsService {
         let cx = 0;
 
         for (let i = 0; i < config.docs.length; i++) {
-            this.httpClient.get(API_PATH.docs + config.docs[i]).subscribe(res => {
+            this.httpClient.get(API_PATH.docs + config.docs[i] + '?version=' + new Date()).subscribe(res => {
                 this.models[i] = <DocsModel>res
                 console.log(config.docs[i] + "载入成功")
                 cx++;

@@ -1,0 +1,63 @@
+{
+    "title": "测试模块",
+    "forms": [{
+            "title": "字段参数校验",
+            "description": "测试请求参数校验服务",
+            "url": "/valid/test",
+            "method": "post",
+            "inputs": [{
+                    "name": "email",
+                    "description": "邮箱"
+                },
+                {
+                    "name": "password",
+                    "description": "密码"
+                }
+            ]
+        },
+        {
+            "title": "上传文件",
+            "description": "上传一个文件，并获取此文件的url链接",
+            "url": "/upload/file",
+            "method": "post",
+            "inputs": [{
+                "type": "file",
+                "name": "file",
+                "description": "选择文件"
+            }]
+        },
+        {
+            "title": "图片上传",
+            "description": "上传一张图片，并获取此图片的url链接",
+            "url": "/upload/image",
+            "method": "post",
+            "inputs": [{
+                "type": "file",
+                "name": "image",
+                "description": "选择图片"
+            }]
+        },
+        {
+            "title": "文件删除",
+            "description": "提供文件的url链接，尝试删除文件",
+            "url": "/upload/remove",
+            "method": "delete",
+            "inputs": [{
+                "type": "text",
+                "name": "path",
+                "description": "图片链接"
+            }]
+        },
+        {
+            "title": "工行测试",
+            "description": "",
+            "url": "/test/notify",
+            "method": "post",
+            "inputs": [
+                { "name": "merVAR", "description": "..." },
+                { "name": "notifyData", "description": "..." },
+                { "name": "signMsg", "description": "..." }
+            ]
+        }
+    ]
+}

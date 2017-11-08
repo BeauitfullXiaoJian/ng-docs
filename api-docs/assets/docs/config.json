@@ -1,0 +1,14 @@
+{
+    "server": "http://ng.cool1024.com",
+    "title": "API-DOCS",
+    "headers": [
+        "ng-params-one", "ng-params-two"
+    ],
+    "docs": [
+        "example.json",
+        "auth.json",
+        "role.json",
+        "menu.json",
+        "permission.json"
+    ]
+}

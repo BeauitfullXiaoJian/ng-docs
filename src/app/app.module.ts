@@ -17,6 +17,7 @@ import { AppComponent } from "./app.component";
 //page component list
 import { ViewComponent } from './pages/view/view.component';
 import { DocsComponent } from './pages/docs/docs.component';
+import { LaboratoryComponent } from './pages/laboratory/laboratory.component';
 
 
 @NgModule({
@@ -29,13 +30,15 @@ import { DocsComponent } from './pages/docs/docs.component';
     ClarityModule.forRoot(),
     RouterModule.forRoot([
       { path: 'view/:model/:form', component: ViewComponent },
-      { path: 'docs', component: DocsComponent }
+      { path: 'docs', component: DocsComponent },
+      { path: 'laboratory', component: LaboratoryComponent }      
     ])
   ],
   declarations: [
     AppComponent,
     ViewComponent,
     DocsComponent,
+    LaboratoryComponent,
   ],
   bootstrap: [AppComponent],
   providers: [
